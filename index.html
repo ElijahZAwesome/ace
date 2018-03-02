@@ -196,6 +196,7 @@ console.log(addResult);
 ace.edit(element, {
     mode: "ace/mode/javascript",
     selectionStyle: "text"
+    // see full list of available options below
 })
 // use setOptions method to set several options at once
 editor.setOptions({
@@ -213,28 +214,108 @@ editor.getOption("optionName");
 </code>
 </pre>
                             <p>See <a href="https://github.com/ajaxorg/ace/wiki/Configuring-Ace">Configuring-Ace wiki page</a> for a more detailed list of options.</p>
+<pre><code class="javascript">editor.setOptions({
+    /*** editor options ***/
+    selectionStyle: "line"|"text"
+    highlightActiveLine: true|false
+    highlightSelectedWord: true|false
+    readOnly: true|false
+    cursorStyle: "ace"|"slim"|"smooth"|"wide"
+    mergeUndoDeltas: false|true|"always"
+    behavioursEnabled: boolean
+    wrapBehavioursEnabled: boolean
+    // this is needed if editor is inside scrollable page
+    autoScrollEditorIntoView: boolean (defaults to false)
+    // copy/cut the full line if selection is empty, defaults to false
+    copyWithEmptySelection: boolean 
+    useSoftTabs: boolean (defaults to false)
+    navigateWithinSoftTabs: boolean (defaults to false)
+ 
+    /*** renderer options ***/
+    hScrollBarAlwaysVisible: boolean
+    vScrollBarAlwaysVisible: boolean
+    highlightGutterLine: boolean
+    animatedScroll: boolean
+    showInvisibles: boolean
+    showPrintMargin: boolean
+    printMarginColumn: number (defaults to 80)
+    // shortcut for showPrintMargin and printMarginColumn
+    printMargin: false|number 
+    fadeFoldWidgets: boolean
+    showFoldWidgets: boolean (defaults to true)
+    showLineNumbers: boolean (defaults to true)
+    showGutter: boolean (defaults to true)
+    displayIndentGuides: boolean (defaults to true)
+    fontSize: number or css font-size string
+    fontFamily: css font-family value
+    // resize editor based on the contents of the editor until the number of lines reaches maxLines
+    maxLines: number
+    minLines: number
+    // number of page sizes to scroll after document end (typical values are 0, 0.5, and 1)
+    scrollPastEnd: number|boolean
+    fixedWidthGutter: boolean (defaults to false)
+    theme: path to a theme e.g "ace/theme/textmate"
+ 
+
+    /*** mouseHandler options ***/
+    scrollSpeed: number
+    dragDelay:  number
+    dragEnabled: boolean (defaults to true)
+    focusTimout: number
+    tooltipFollowsMouse: boolean
+ 
+    /*** session options ***/
+    firstLineNumber: number defaults to 1
+    overwrite: boolean
+    newLineMode: "auto" | "unix" | "windows"
+    useWorker: boolean
+    useSoftTabs: boolean
+    tabSize: number
+    wrap: boolean|number
+    foldStyle: "markbegin"|"markbeginend"|"manual"
+    mode: path to a mode e.g "ace/mode/text"
+ 
+
+    /*** editor options defined by extensions  ***/ 
+    enableMultiselect: boolean   // on by default
+    enableEmmet: boolean
+    enableBasicAutocompletion: boolean
+    enableLiveAutocompletion:   boolean
+    enableSnippets: boolean
+    spellcheck: boolean
+    useElasticTabstops: boolean
+ })
+</code>
+</pre>                            
                             <h3>Changing the size of the editor</h3>
                             <p>Ace only checks for changes of the size of it's container when window is resized. If you resize the editor div in another manner, and need Ace to resize, use the following:</p>
                             <pre><code class="javascript">editor.resize()</code></pre>
                             <p>if you want editor to change it's size based on contents, use maxLines option as shown in <a target="_blank" rel="noreferer noopener" href="https://ace.c9.io/demo/autoresize.html">https://ace.c9.io/demo/autoresize.html</a></p>
-                            <h2>Setting Themes</h2>
-                            <p>Themes are loaded on demand; all you have to do is pass the string name:</p>
+                            
+                            
+                            <h2>Setting Themes and syntax highlighting modes</h2>
+                            <p>Themes and language modes are loaded on demand; all you have to do is pass the string name:</p>
                             <pre><code class="javascript">editor.setTheme("ace/theme/twilight");</code></pre>
-                            <p><span class="expand_arrow">&gt;</span> <a href="https://github.com/ajaxorg/ace/tree/master/lib/ace/theme" target="_blank" rel="noreferer noopener">See all themes</a></p>
-                            <h2>Setting the Programming Language Mode</h2>
+                            <p><span class="expand_arrow">&gt;</span> <a href="https://github.com/ajaxorg/ace/tree/master/lib/ace/theme" target="_blank" rel="noreferer noopener">See all themes</a></p>                            
                             <p>By default, the editor supports plain text mode. All other language modes are available as separate modules, loaded on demand like this:</p>
                             <pre><code class="javascript">editor.session.setMode("ace/mode/javascript");</code></pre>
+                            ace.config.setModuleUrl("ace/theme/terminal", basepath + "/theme-terminal.min.js");
+editor.setTheme('ace/theme/terminal');
+
+                            
                             <h2>One Editor, Multiple Sessions</h2>
                                 <p>Ace keeps everything about the state of the editor (selection, scroll position, etc.)
                                     in <code class="javascript">editor.session</code>. This means you can grab the
                                     session, store it in a var, and set the editor to another session (e.g. a tabbed editor).</p>
                                 <p>You might accomplish this like so:</p>
                                 
-                                <pre><code class="javascript">var EditSession = require("ace/edit_session").EditSession;
-var js = new EditSession("some js code");
-var css = new EditSession(["some", "css", "code here"]);
-// and then to load document into editor, just call
-editor.setSession(js);</code></pre>
+                                <pre><code class="javascript">
+                                    var EditSession = require("ace/edit_session").EditSession;
+                                    var js = new EditSession("some js code");
+                                    var css = new EditSession(["some", "css", "code here"]);
+                                    // and then to load document into editor, just call
+                                    editor.setSession(js);
+                                </code></pre>
                             <h2>Common Operations</h2>
                             <p>Set and get content:</p>
                             <pre><code class="javascript">editor.setValue("the new text here");
