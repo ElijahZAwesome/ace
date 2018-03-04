@@ -49,3 +49,9 @@
 .ace_optionsMenuEntry button:hover{
     background: #f0f0f0;
 }
+
+.ace_prompt_cover {
+    opacity: 0;
+    transition: 0.1s all;
+}
+
